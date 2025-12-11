@@ -1,0 +1,19 @@
+GET: localhost:8222/api/v1/products
+
+POST: localhost:8222/api/v1/customers
+{
+    "firstname": "Hamza",
+    "lastname": "Nb",
+    "email": "h.nait@gmail.com",
+    "address": {
+        "street": "street 1",
+        "houseNumber": "33",
+        "zipCode": "900000"
+    }
+}
+
+ZipKin: http://localhost:9411/zipkin/
+
+eureka: http://localhost:8761/
+
+

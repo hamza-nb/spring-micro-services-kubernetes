@@ -1,6 +1,7 @@
 package com.alibou.ecommerce.notification;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface NotificationRepository extends MongoRepository<Notification, String> {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface NotificationRepository extends JpaRepository<Notification, String> {
 }

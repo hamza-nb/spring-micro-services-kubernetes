@@ -1,14 +1,25 @@
 server:
   port: 8040
+# spring:
+#   data:
+#     mongodb:
+#       username: alibou
+#       password: alibou
+#       host: localhost
+#       port: 27017
+#       database: notification
+#       authentication-database: admin
 spring:
-  data:
-    mongodb:
-      username: alibou
-      password: alibou
-      host: localhost
-      port: 27017
-      database: notification
-      authentication-database: admin
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/notification
+    username: alibou
+    password: alibou
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
   kafka:
     consumer:
       bootstrap-servers: localhost:9092

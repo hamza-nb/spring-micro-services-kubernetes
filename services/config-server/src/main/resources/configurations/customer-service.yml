@@ -1,11 +1,13 @@
 server:
   port: 8090
 spring:
-  data:
-    mongodb:
-      username: alibou
-      password: alibou
-      host: localhost
-      port: 27017
-      database: customer
-      authentication-database: admin
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/customer
+    username: alibou
+    password: alibou
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect

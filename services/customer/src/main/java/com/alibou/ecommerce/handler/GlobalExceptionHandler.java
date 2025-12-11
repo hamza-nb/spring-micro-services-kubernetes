@@ -22,18 +22,20 @@ public class GlobalExceptionHandler {
         .body(exp.getMsg());
   }
 
-  @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException exp) {
-    var errors = new HashMap<String, String>();
-    exp.getBindingResult().getAllErrors()
-            .forEach(error -> {
-              var fieldName = ((FieldError) error).getField();
-              var errorMessage = error.getDefaultMessage();
-              errors.put(fieldName, errorMessage);
-            });
+//  @ExceptionHandler(MethodArgumentNotValidException.class)
+//  public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException exp) {
+//    var errors = new HashMap<String, String>();
+//    exp.getBindingResult().getAllErrors()
+//            .forEach(error -> {
+//              var fieldName = ((FieldError) error).getField();
+//              var errorMessage = error.getDefaultMessage();
+//              errors.put(fieldName, errorMessage);
+//            });
+//
+//    return ResponseEntity
+//            .status(BAD_REQUEST)
+//            .body(new ErrorResponse(errors));
+//  }
 
-    return ResponseEntity
-            .status(BAD_REQUEST)
-            .body(new ErrorResponse(errors));
-  }
+
 }
