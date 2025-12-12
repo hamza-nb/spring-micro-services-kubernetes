@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: config-service-svc
+  labels:
+    app: config-service-svc
+spec:
+  type: LoadBalancer
+  ports:
+    - name: config-svc-port
+      port: 8888
+      targetPort: 8888
+      protocol: TCP
+  selector:
+    app: config-service-pod
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: config-service-dep
+  labels:
+    app: config-service-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: config-service-pod
+  template:
+    metadata:
+      labels:
+        app: config-service-pod
+    spec:
+      containers:
+        - name: config-service-container
+          image: config-server
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: root-config
+              mountPath: /config/application.yml
+              subPath: application.yml
+            - name: configurations
+              mountPath: /config/configurations
+
+#            - name: root-config
+#              mountPath: /app/src/main/resources/application.yml
+#              subPath: application.yml
+#            - name: configurations
+#              mountPath: /app/src/main/resources/configurations
+
+          ports:
+            - containerPort: 8888
+              name: config-svc-port
+          env:
+            # Tell Spring Boot to look in /config directory
+            - name: SPRING_CONFIG_ADDITIONAL_LOCATION
+              value: "file:/config/"
+      volumes:
+        - name: configurations
+          configMap:
+            name: config-server-configurations
+        - name: root-config
+          configMap:
+            name: config-server-root-configuration
