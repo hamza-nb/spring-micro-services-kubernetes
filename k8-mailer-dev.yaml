@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mailer-dev
+  labels:
+    app: mailer-dev-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mailer-dev-pod
+  template:
+    metadata:
+      labels:
+        app: mailer-dev-pod
+    spec:
+      containers:
+        - name: mailer-dev
+          image: maildev/maildev
+          ports:
+            - containerPort: 1080
+              name: first-port
+            - containerPort: 1025
+              name: second-port
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mailer-dev
+  labels:
+    app: mailer-dev-svc
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 1080
+      targetPort: 1080
+      name: first-port
+      protocol: TCP
+    - port: 1025
+      targetPort: 1025
+      name: second-port
+      protocol: TCP
+  selector:
+    app: mailer-dev-pod
+
