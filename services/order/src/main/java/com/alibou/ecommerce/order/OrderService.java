@@ -37,8 +37,14 @@ public class OrderService {
 
         var purchasedProducts = productClient.purchaseProducts(request.products());
 
+        System.err.println("=======---111111---==========");
+        System.err.println(purchasedProducts);
+        System.err.println("=======---22222222---==========");
+        System.err.println(mapper.toOrder(request));
+        System.err.println("=======---3333333---==========");
         var order = this.repository.save(mapper.toOrder(request));
-
+        System.err.println(order);
+        System.err.println("=======------==========");
         for (PurchaseRequest purchaseRequest : request.products()) {
             orderLineService.saveOrderLine(
                     new OrderLineRequest(

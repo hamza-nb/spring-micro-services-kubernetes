@@ -52,6 +52,9 @@ public class CustomerController {
   public ResponseEntity<CustomerResponse> findById(
       @PathVariable("customer-id") String customerId
   ) {
+    System.err.println("==========-----------====customer====------------========");
+    System.err.println("==========-----------====customer====------------========");
+    System.err.println("==========-----------====customer====------------========");
     return ResponseEntity.ok(this.service.findById(customerId));
   }
 

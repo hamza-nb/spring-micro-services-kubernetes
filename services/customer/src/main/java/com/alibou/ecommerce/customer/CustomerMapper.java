@@ -22,12 +22,23 @@ public class CustomerMapper {
     if (customer == null) {
       return null;
     }
+    customer.getAddress().setCustomers(null);
     return new CustomerResponse(
         customer.getId(),
         customer.getFirstname(),
         customer.getLastname(),
-        customer.getEmail(),
-        customer.getAddress()
+        customer.getEmail()
+    );
+  }
+
+  private AddressResponse fromAddress(Address address) {
+    if (address == null) {
+      return null;
+    }
+    return new AddressResponse(
+            address.getStreet(),
+            address.getHouseNumber(),
+            address.getZipCode()
     );
   }
 }

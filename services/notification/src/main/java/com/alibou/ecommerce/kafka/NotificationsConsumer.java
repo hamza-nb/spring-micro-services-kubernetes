@@ -27,13 +27,13 @@ public class NotificationsConsumer {
     @KafkaListener(topics = "payment-topic")
     public void consumePaymentSuccessNotifications(PaymentConfirmation paymentConfirmation) throws MessagingException {
         log.info(format("Consuming the message from payment-topic Topic:: %s", paymentConfirmation));
-        repository.save(
-                Notification.builder()
-                        .type(PAYMENT_CONFIRMATION)
-                        .notificationDate(LocalDateTime.now())
-                        .paymentConfirmation(paymentConfirmation)
-                        .build()
-        );
+//        repository.save(
+//                Notification.builder()
+//                        .type(PAYMENT_CONFIRMATION)
+//                        .notificationDate(LocalDateTime.now())
+//                        .paymentConfirmation(paymentConfirmation)
+//                        .build()
+//        );
         var customerName = paymentConfirmation.customerFirstname() + " " + paymentConfirmation.customerLastname();
         emailService.sendPaymentSuccessEmail(
                 paymentConfirmation.customerEmail(),
@@ -46,13 +46,13 @@ public class NotificationsConsumer {
     @KafkaListener(topics = "order-topic")
     public void consumeOrderConfirmationNotifications(OrderConfirmation orderConfirmation) throws MessagingException {
         log.info(format("Consuming the message from order-topic Topic:: %s", orderConfirmation));
-        repository.save(
-                Notification.builder()
-                        .type(ORDER_CONFIRMATION)
-                        .notificationDate(LocalDateTime.now())
-                        .orderConfirmation(orderConfirmation)
-                        .build()
-        );
+//        repository.save(
+//                Notification.builder()
+//                        .type(ORDER_CONFIRMATION)
+//                        .notificationDate(LocalDateTime.now())
+//                        .orderConfirmation(orderConfirmation)
+//                        .build()
+//        );
         var customerName = orderConfirmation.customer().firstname() + " " + orderConfirmation.customer().lastname();
         emailService.sendOrderConfirmationEmail(
                 orderConfirmation.customer().email(),

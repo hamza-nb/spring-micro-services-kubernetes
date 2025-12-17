@@ -1,3 +1,13 @@
+ZipKin: http://localhost:9411/zipkin/
+
+eureka: http://localhost:8761/
+
+mailer-server: http://localhost:1080/#/
+
+kafka-ui: http://localhost:8002/
+
+================================
+
 GET: localhost:8222/api/v1/products
 
 POST: localhost:8222/api/v1/customers
@@ -12,10 +22,6 @@ POST: localhost:8222/api/v1/customers
     }
 }
 
-ZipKin: http://localhost:9411/zipkin/
-
-eureka: http://localhost:8761/
-
-kubectl create configmap config-server--configurations \
+kubectl create configmap config-server-configurations \
   --from-file=src/main/resources/configurations \
   --dry-run=client -o yaml > configmap-config-server-configurations.yaml

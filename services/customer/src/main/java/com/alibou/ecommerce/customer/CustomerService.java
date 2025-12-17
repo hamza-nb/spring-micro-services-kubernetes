@@ -49,9 +49,19 @@ public class CustomerService {
   }
 
   public CustomerResponse findById(String id) {
-    return this.repository.findById(id)
+
+    System.err.println("==========-----------========------------========");
+    System.err.println("==========-----------========------------========");
+    System.err.println("==========-----------========------------========");
+    var constumer =  this.repository.findById(id)
         .map(mapper::fromCustomer)
         .orElseThrow(() -> new CustomerNotFoundException(String.format("No customer found with the provided ID: %s", id)));
+
+
+    System.err.println(constumer);
+    System.err.println("==========-----------========------------========");
+    System.err.println("==========-----------========------------========");
+  return constumer;
   }
 
   public boolean existsById(String id) {
