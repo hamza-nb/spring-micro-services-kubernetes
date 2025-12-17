@@ -34,12 +34,12 @@ spec:
         - name: config-service-container
           image: config-server
           imagePullPolicy: IfNotPresent
-          volumeMounts:
-            - name: root-config
-              mountPath: /config/application.yml
-              subPath: application.yml
-            - name: configurations
-              mountPath: /config/configurations
+#          volumeMounts:
+#            - name: root-config
+#              mountPath: /config/application.yml
+#              subPath: application.yml
+#            - name: configurations
+#              mountPath: /config/configurations
 
 #            - name: root-config
 #              mountPath: /app/src/main/resources/application.yml
@@ -50,14 +50,14 @@ spec:
           ports:
             - containerPort: 8888
               name: config-svc-port
-          env:
-            # Tell Spring Boot to look in /config directory
-            - name: SPRING_CONFIG_ADDITIONAL_LOCATION
-              value: "file:/config/"
-      volumes:
-        - name: configurations
-          configMap:
-            name: config-server-configurations
-        - name: root-config
-          configMap:
-            name: config-server-root-configuration
+#          env:
+#            # Tell Spring Boot to look in /config directory
+#            - name: SPRING_CONFIG_ADDITIONAL_LOCATION
+#              value: "file:/config/"
+#      volumes:
+#        - name: configurations
+#          configMap:
+#            name: config-server-configurations
+#        - name: root-config
+#          configMap:
+#            name: config-server-root-configuration
