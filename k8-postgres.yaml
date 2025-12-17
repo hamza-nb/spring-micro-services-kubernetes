@@ -19,6 +19,19 @@ data:
   PGDATA: /data/postgres
 ---
 apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init-script
+data:
+  init.sql: |
+    -- Create multiple databases
+    CREATE DATABASE IF NOT EXISTS customer;
+    CREATE DATABASE IF NOT EXISTS notification;
+    CREATE DATABASE IF NOT EXISTS order;
+    CREATE DATABASE IF NOT EXISTS payment;
+    CREATE DATABASE IF NOT EXISTS product;
+---
+apiVersion: v1
 kind: Secret
 metadata:
   name: postgres-secret
@@ -66,10 +79,15 @@ spec:
           volumeMounts:
             - name: postgres-storage
               mountPath: /data/postgres
+            - name: init-script
+              mountPath: /docker-entrypoint-initdb.d
       volumes:
         - name: postgres-storage
           persistentVolumeClaim:
             claimName: postgres-pvc
+        - name: init-script
+          configMap:
+            name: postgres-init-script
       restartPolicy: Always
 ---
 apiVersion: v1
