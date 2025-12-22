@@ -1,0 +1,66 @@
+apiVersion: v1
+data:
+  application.yml: |
+    spring:
+      config:
+        import: optional:configserver:http://config-service-svc:8888
+      application:
+        name: discovery-service
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: discovery-server-configuration
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: discovery-service-svc
+  labels:
+    app: discovery-service-svc
+spec:
+  type: LoadBalancer
+  ports:
+    - name: discovery-port
+      port: 8888
+      targetPort: 8888
+      protocol: TCP
+  selector:
+    app: discovery-service-pod
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: discovery-service-dep
+  labels:
+    app: discovery-service-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: discovery-service-pod
+  template:
+    metadata:
+      labels:
+        app: discovery-service-pod
+    spec:
+      containers:
+        - name: discovery-service-container
+          image: discovery-server
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: root-config
+              mountPath: /config/application.yml
+              subPath: application.yml
+
+          ports:
+            - containerPort: 8888
+              name: discovery-port
+          env:
+            # Tell Spring Boot to look in /discovery directory
+            - name: SPRING_CONFIG_ADDITIONAL_LOCATION
+              value: "file:/config/"
+      volumes:
+        - name: root-config
+          configMap:
+            name: discovery-server-configuration
