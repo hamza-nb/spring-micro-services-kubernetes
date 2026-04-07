@@ -106,7 +106,7 @@ data:
           value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
           properties:
             spring.json.trusted.packages: '*'
-            spring.json.type.mapping: orderConfirmation:com.hamza.ecommerce.kafka.order.OrderConfirmation,paymentConfirmation:com.hamza.ecommerce.kafka.payment.PaymentConfirmation
+            spring.json.type.mapping: orderConfirmation:com.hamzaecommerce.kafka.order.OrderConfirmation,paymentConfirmation:com.hhamzacommerce.kafka.payment.PaymentConfirmation
       mail:
         host: localhost
         port: 1025
@@ -142,7 +142,7 @@ data:
           key-serializer: org.apache.kafka.common.serialization.StringSerializer
           value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
           properties:
-            spring.json.type.mapping: orderConfirmation:com.hamza.ecommerce.kafka.OrderConfirmation
+            spring.json.type.mapping: orderConfirmation:com.hamzaecommerce.kafka.OrderConfirmation
 
     application:
       config:
@@ -170,7 +170,7 @@ data:
           key-serializer: org.apache.kafka.common.serialization.StringSerializer
           value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
           properties:
-            spring.json.type.mapping: paymentConfirmation:com.hamza.ecommerce.notification.PaymentNotificationRequest
+            spring.json.type.mapping: paymentConfirmation:com.hamzaecommerce.notification.PaymentNotificationRequest
     application:
       config:
         product-url: http://localhost:8222/api/v1/products
