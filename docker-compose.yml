@@ -3,8 +3,8 @@ services:
     container_name: ms_pg_sql
     image: postgres
     environment:
-      POSTGRES_USER: alibou
-      POSTGRES_PASSWORD: alibou
+      POSTGRES_USER: hamza
+      POSTGRES_PASSWORD: hamza
       PGDATA: /data/postgres
     volumes:
       - postgres:/data/postgres
@@ -46,8 +46,8 @@ services:
 #    volumes:
 #      - mongodb_data:/data/db
 #    environment:
-#      MONGO_INITDB_ROOT_USERNAME: alibou
-#      MONGO_INITDB_ROOT_PASSWORD: alibou
+#      MONGO_INITDB_ROOT_USERNAME: hamza
+#      MONGO_INITDB_ROOT_PASSWORD: hamza
 #    networks:
 #      - microservices-net
 #
@@ -58,13 +58,13 @@ services:
 #    ports:
 #      - 8081:8081
 #    environment:
-#      - ME_CONFIG_MONGODB_ADMINUSERNAME=alibou
-#      - ME_CONFIG_MONGODB_ADMINPASSWORD=alibou
+#      - ME_CONFIG_MONGODB_ADMINUSERNAME=hamza
+#      - ME_CONFIG_MONGODB_ADMINPASSWORD=hamza
 #      - ME_CONFIG_MONGODB_SERVER=mongodb
 #      - ME_CONFIG_MONGODB_AUTH_DATABASE=admin
 #      - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
-#      - ME_CONFIG_BASICAUTH_USERNAME=alibou     # Add this
-#      - ME_CONFIG_BASICAUTH_PASSWORD=alibou
+#      - ME_CONFIG_BASICAUTH_USERNAME=hamza     # Add this
+#      - ME_CONFIG_BASICAUTH_PASSWORD=hamza
 #    depends_on:
 #      - mongodb
 #    networks:

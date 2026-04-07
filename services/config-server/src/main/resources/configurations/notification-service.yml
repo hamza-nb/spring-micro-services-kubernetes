@@ -3,8 +3,8 @@ server:
 # spring:
 #   data:
 #     mongodb:
-#       username: alibou
-#       password: alibou
+#       username: hamza
+#       password: hamza
 #       host: localhost
 #       port: 27017
 #       database: notification
@@ -29,12 +29,12 @@ spring:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         spring.json.trusted.packages: '*'
-        spring.json.type.mapping: orderConfirmation:com.alibou.ecommerce.kafka.order.OrderConfirmation,paymentConfirmation:com.alibou.ecommerce.kafka.payment.PaymentConfirmation
+        spring.json.type.mapping: orderConfirmation:com.hamza.ecommerce.kafka.order.OrderConfirmation,paymentConfirmation:com.hamza.ecommerce.kafka.payment.PaymentConfirmation
   mail:
     host: localhost
     port: 1025
-    username: alibou
-    password: alibou
+    username: hamza
+    password: hamza
     properties:
       mail:
         smtp:

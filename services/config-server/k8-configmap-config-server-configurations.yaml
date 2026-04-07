@@ -8,7 +8,7 @@ data:
         service-url:
           defaultZone: http://localhost:8761/eureka
     name:
-      value: alibou
+      value: hamza
     spring:
       cloud:
         config:
@@ -25,8 +25,8 @@ data:
       datasource:
         driver-class-name: org.postgresql.Driver
         url: jdbc:postgresql://localhost:5432/customer
-        username: alibou
-        password: alibou
+        username: hamza
+        password: hamza
       jpa:
         hibernate:
           ddl-auto: update
@@ -80,8 +80,8 @@ data:
     # spring:
     #   data:
     #     mongodb:
-    #       username: alibou
-    #       password: alibou
+    #       username: hamza
+    #       password: hamza
     #       host: localhost
     #       port: 27017
     #       database: notification
@@ -90,8 +90,8 @@ data:
       datasource:
         driver-class-name: org.postgresql.Driver
         url: jdbc:postgresql://localhost:5432/notification
-        username: alibou
-        password: alibou
+        username: hamza
+        password: hamza
       jpa:
         hibernate:
           ddl-auto: update
@@ -106,12 +106,12 @@ data:
           value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
           properties:
             spring.json.trusted.packages: '*'
-            spring.json.type.mapping: orderConfirmation:com.alibou.ecommerce.kafka.order.OrderConfirmation,paymentConfirmation:com.alibou.ecommerce.kafka.payment.PaymentConfirmation
+            spring.json.type.mapping: orderConfirmation:com.hamza.ecommerce.kafka.order.OrderConfirmation,paymentConfirmation:com.hamza.ecommerce.kafka.payment.PaymentConfirmation
       mail:
         host: localhost
         port: 1025
-        username: alibou
-        password: alibou
+        username: hamza
+        password: hamza
         properties:
           mail:
             smtp:
@@ -129,8 +129,8 @@ data:
       datasource:
         driver-class-name: org.postgresql.Driver
         url: jdbc:postgresql://localhost:5432/order
-        username: alibou
-        password: alibou
+        username: hamza
+        password: hamza
       jpa:
         hibernate:
           ddl-auto: create
@@ -142,7 +142,7 @@ data:
           key-serializer: org.apache.kafka.common.serialization.StringSerializer
           value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
           properties:
-            spring.json.type.mapping: orderConfirmation:com.alibou.ecommerce.kafka.OrderConfirmation
+            spring.json.type.mapping: orderConfirmation:com.hamza.ecommerce.kafka.OrderConfirmation
 
     application:
       config:
@@ -156,8 +156,8 @@ data:
       datasource:
         driver-class-name: org.postgresql.Driver
         url: jdbc:postgresql://localhost:5432/payment
-        username: alibou
-        password: alibou
+        username: hamza
+        password: hamza
       jpa:
         hibernate:
           ddl-auto: create
@@ -170,7 +170,7 @@ data:
           key-serializer: org.apache.kafka.common.serialization.StringSerializer
           value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
           properties:
-            spring.json.type.mapping: paymentConfirmation:com.alibou.ecommerce.notification.PaymentNotificationRequest
+            spring.json.type.mapping: paymentConfirmation:com.hamza.ecommerce.notification.PaymentNotificationRequest
     application:
       config:
         product-url: http://localhost:8222/api/v1/products
@@ -181,8 +181,8 @@ data:
       datasource:
         driver-class-name: org.postgresql.Driver
         url: jdbc:postgresql://localhost:5432/product
-        username: alibou
-        password: alibou
+        username: hamza
+        password: hamza
       jpa:
         hibernate:
           ddl-auto: validate
