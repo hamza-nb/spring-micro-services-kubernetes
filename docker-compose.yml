@@ -14,20 +14,20 @@ services:
       - microservices-net
     restart: unless-stopped
 
-#  pgadmin:
-#    container_name: ms_pgadmin
-#    image: dpage/pgadmin4
-#    environment:
-#      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
-#      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-#      PGADMIN_CONFIG_SERVER_MODE: 'False'
-#    volumes:
-#      - pgadmin:/var/lib/pgadmin
-#    ports:
-#      - "5050:80"
-#    networks:
-#      - microservices-net
-#    restart: unless-stopped
+  #  pgadmin:
+  #    container_name: ms_pgadmin
+  #    image: dpage/pgadmin4
+  #    environment:
+  #      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+  #      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+  #      PGADMIN_CONFIG_SERVER_MODE: 'False'
+  #    volumes:
+  #      - pgadmin:/var/lib/pgadmin
+  #    ports:
+  #      - "5050:80"
+  #    networks:
+  #      - microservices-net
+  #    restart: unless-stopped
 
   zipkin:
     container_name: zipkin
@@ -37,38 +37,38 @@ services:
     networks:
       - microservices-net
 
-#  mongodb:
-#    image: mongo:4.4.14
-#    container_name: mongo_db
-#    platform: linux/arm64/v8
-#    ports:
-#      - 27017:27017
-#    volumes:
-#      - mongodb_data:/data/db
-#    environment:
-#      MONGO_INITDB_ROOT_USERNAME: hamza
-#      MONGO_INITDB_ROOT_PASSWORD: hamza
-#    networks:
-#      - microservices-net
-#
-#  mongo-express:
-#    image: mongo-express
-#    container_name: mongo_express
-#    restart: always
-#    ports:
-#      - 8081:8081
-#    environment:
-#      - ME_CONFIG_MONGODB_ADMINUSERNAME=hamza
-#      - ME_CONFIG_MONGODB_ADMINPASSWORD=hamza
-#      - ME_CONFIG_MONGODB_SERVER=mongodb
-#      - ME_CONFIG_MONGODB_AUTH_DATABASE=admin
-#      - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
-#      - ME_CONFIG_BASICAUTH_USERNAME=hamza     # Add this
-#      - ME_CONFIG_BASICAUTH_PASSWORD=hamza
-#    depends_on:
-#      - mongodb
-#    networks:
-#      - microservices-net
+  #  mongodb:
+  #    image: mongo:4.4.14
+  #    container_name: mongo_db
+  #    platform: linux/arm64/v8
+  #    ports:
+  #      - 27017:27017
+  #    volumes:
+  #      - mongodb_data:/data/db
+  #    environment:
+  #      MONGO_INITDB_ROOT_USERNAME: hamza
+  #      MONGO_INITDB_ROOT_PASSWORD: hamza
+  #    networks:
+  #      - microservices-net
+  #
+  #  mongo-express:
+  #    image: mongo-express
+  #    container_name: mongo_express
+  #    restart: always
+  #    ports:
+  #      - 8081:8081
+  #    environment:
+  #      - ME_CONFIG_MONGODB_ADMINUSERNAME=hamza
+  #      - ME_CONFIG_MONGODB_ADMINPASSWORD=hamza
+  #      - ME_CONFIG_MONGODB_SERVER=mongodb
+  #      - ME_CONFIG_MONGODB_AUTH_DATABASE=admin
+  #      - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
+  #      - ME_CONFIG_BASICAUTH_USERNAME=hamza    # Add this
+  #      - ME_CONFIG_BASICAUTH_PASSWORD=hamza
+  #    depends_on:
+  #      - mongodb
+  #    networks:
+  #      - microservices-net
 
   kafka:
     image: confluentinc/cp-kafka:latest

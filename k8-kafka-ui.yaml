@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kafka-ui
+  namespace: e-commerce
   labels:
     app: kafka-ui
 spec:
@@ -54,6 +55,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: kafka-ui
+  namespace: e-commerce
   labels:
     app: kafka-ui
 spec:

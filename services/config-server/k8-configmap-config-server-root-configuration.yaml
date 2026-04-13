@@ -12,8 +12,8 @@ data:
         config:
           server:
             native:
-              search-locations: classpath:/configurations
+              search-locations: file:/config/configurations/
 kind: ConfigMap
 metadata:
-  creationTimestamp: null
   name: config-server-root-configuration
+  namespace: e-commerce

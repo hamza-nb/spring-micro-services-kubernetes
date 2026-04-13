@@ -18,7 +18,7 @@ USER spring:spring
 # Copy the jar from build stage
 COPY --from=build /app/target/*.jar app.jar
 # Expose port
-EXPOSE 8888
+EXPOSE 8761
 # Set JVM options
 ENV JAVA_OPTS="-Xmx512m -Xms256m"
 # Run the application

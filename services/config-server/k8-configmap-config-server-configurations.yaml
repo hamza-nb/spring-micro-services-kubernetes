@@ -3,10 +3,10 @@ data:
   application.yml: |
     eureka:
       instance:
-        hostname: localhost
+        prefer-ip-address: true
       client:
         service-url:
-          defaultZone: http://localhost:8761/eureka
+          defaultZone: http://discovery-service-svc:8761/eureka
     name:
       value: hamza
     spring:
@@ -18,13 +18,16 @@ data:
       tracing:
         sampling:
           probability: 1.0
+      zipkin:
+        tracing:
+          endpoint: http://zipkin:9411/api/v2/spans
   customer-service.yml: |
     server:
       port: 8090
     spring:
       datasource:
         driver-class-name: org.postgresql.Driver
-        url: jdbc:postgresql://localhost:5432/customer
+        url: jdbc:postgresql://postgresql:5432/customer
         username: hamza
         password: hamza
       jpa:
@@ -35,12 +38,12 @@ data:
   discovery-service.yml: |
     eureka:
       instance:
-        hostname: localhost
+        prefer-ip-address: true
       client:
         registerWithEureka: false
         fetchRegistry: false
         serviceUrl:
-          defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+          defaultZone: http://discovery-service-svc:8761/eureka
 
     server:
       port: 8761
@@ -77,19 +80,10 @@ data:
   notification-service.yml: |
     server:
       port: 8040
-    # spring:
-    #   data:
-    #     mongodb:
-    #       username: hamza
-    #       password: hamza
-    #       host: localhost
-    #       port: 27017
-    #       database: notification
-    #       authentication-database: admin
     spring:
       datasource:
         driver-class-name: org.postgresql.Driver
-        url: jdbc:postgresql://localhost:5432/notification
+        url: jdbc:postgresql://postgresql:5432/notification
         username: hamza
         password: hamza
       jpa:
@@ -99,7 +93,7 @@ data:
         database-platform: org.hibernate.dialect.PostgreSQLDialect
       kafka:
         consumer:
-          bootstrap-servers: localhost:9092
+          bootstrap-servers: kafka:9092
           group-id: paymentGroup,orderGroup
           auto-offset-reset: earliest
           key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
@@ -108,7 +102,7 @@ data:
             spring.json.trusted.packages: '*'
             spring.json.type.mapping: orderConfirmation:com.hamzaecommerce.kafka.order.OrderConfirmation,paymentConfirmation:com.hhamzacommerce.kafka.payment.PaymentConfirmation
       mail:
-        host: localhost
+        host: mailer-dev
         port: 1025
         username: hamza
         password: hamza
@@ -128,7 +122,7 @@ data:
     spring:
       datasource:
         driver-class-name: org.postgresql.Driver
-        url: jdbc:postgresql://localhost:5432/order
+        url: jdbc:postgresql://postgresql:5432/order
         username: hamza
         password: hamza
       jpa:
@@ -138,7 +132,7 @@ data:
         database-platform: org.hibernate.dialect.PostgreSQLDialect
       kafka:
         producer:
-          bootstrap-servers: localhost:9092
+          bootstrap-servers: kafka:9092
           key-serializer: org.apache.kafka.common.serialization.StringSerializer
           value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
           properties:
@@ -146,16 +140,16 @@ data:
 
     application:
       config:
-        customer-url: http://localhost:8222/api/v1/customers
-        payment-url: http://localhost:8222/api/v1/payments
-        product-url: http://localhost:8222/api/v1/products
+        customer-url: http://gateway-service-svc:8222/api/v1/customers
+        payment-url: http://gateway-service-svc:8222/api/v1/payments
+        product-url: http://gateway-service-svc:8222/api/v1/products
   payment-service.yml: |
     server:
       port: 8060
     spring:
       datasource:
         driver-class-name: org.postgresql.Driver
-        url: jdbc:postgresql://localhost:5432/payment
+        url: jdbc:postgresql://postgresql:5432/payment
         username: hamza
         password: hamza
       jpa:
@@ -163,24 +157,23 @@ data:
           ddl-auto: create
         database: postgresql
         database-platform: org.hibernate.dialect.PostgreSQLDialect
-
       kafka:
         producer:
-          bootstrap-servers: localhost:9092
+          bootstrap-servers: kafka:9092
           key-serializer: org.apache.kafka.common.serialization.StringSerializer
           value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
           properties:
             spring.json.type.mapping: paymentConfirmation:com.hamzaecommerce.notification.PaymentNotificationRequest
     application:
       config:
-        product-url: http://localhost:8222/api/v1/products
+        product-url: http://gateway-service-svc:8222/api/v1/products
   product-service.yml: |+
     server:
       port: 8050
     spring:
       datasource:
         driver-class-name: org.postgresql.Driver
-        url: jdbc:postgresql://localhost:5432/product
+        url: jdbc:postgresql://postgresql:5432/product
         username: hamza
         password: hamza
       jpa:
@@ -198,5 +191,5 @@ data:
 
 kind: ConfigMap
 metadata:
-  creationTimestamp: null
   name: config-server-configurations
+  namespace: e-commerce

@@ -3,6 +3,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: postgres-pvc
+  namespace: e-commerce
 spec:
   accessModes:
     - ReadWriteOnce
@@ -14,6 +15,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: postgres-config
+  namespace: e-commerce
 data:
   POSTGRES_USER: hamza
   PGDATA: /data/postgres
@@ -22,19 +24,25 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: postgres-init-script
+  namespace: e-commerce
 data:
-  init.sql: |
-    -- Create multiple databases
-    CREATE DATABASE IF NOT EXISTS customer;
-    CREATE DATABASE IF NOT EXISTS notification;
-    CREATE DATABASE IF NOT EXISTS order;
-    CREATE DATABASE IF NOT EXISTS payment;
-    CREATE DATABASE IF NOT EXISTS product;
+  init.sh: |
+    #!/bin/bash
+    set -e
+    for db in customer notification payment product; do
+      psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" \
+        -tc "SELECT 1 FROM pg_database WHERE datname = '$db'" | grep -q 1 || \
+        psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" -c "CREATE DATABASE $db;"
+    done
+    psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" \
+      -tc "SELECT 1 FROM pg_database WHERE datname = 'order'" | grep -q 1 || \
+      psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" -c 'CREATE DATABASE "order";'
 ---
 apiVersion: v1
 kind: Secret
 metadata:
   name: postgres-secret
+  namespace: e-commerce
 type: Opaque
 stringData:
   POSTGRES_PASSWORD: hamza
@@ -43,6 +51,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: postgresql
+  namespace: e-commerce
   labels:
     app: postgresql-dep
 spec:
@@ -57,7 +66,7 @@ spec:
     spec:
       containers:
         - name: postgres
-          image: postgres:latest
+          image: postgres:16
           ports:
             - containerPort: 5432
           env:
@@ -81,6 +90,25 @@ spec:
               mountPath: /data/postgres
             - name: init-script
               mountPath: /docker-entrypoint-initdb.d
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          readinessProbe:
+            exec:
+              command: ["pg_isready", "-U", "hamza"]
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+          livenessProbe:
+            exec:
+              command: ["pg_isready", "-U", "hamza"]
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 3
       volumes:
         - name: postgres-storage
           persistentVolumeClaim:
@@ -88,25 +116,20 @@ spec:
         - name: init-script
           configMap:
             name: postgres-init-script
-      restartPolicy: Always
+            defaultMode: 0755
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: postgresql
+  namespace: e-commerce
   labels:
     app: postgresql-svc
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   ports:
     - port: 5432
       targetPort: 5432
       protocol: TCP
   selector:
     app: postgresql-pod
-
-
-#To connect
-#127.0.0.1:5432
-#User: hamza
-#Password: hamza

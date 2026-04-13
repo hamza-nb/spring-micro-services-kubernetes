@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: discovery-server-configuration
+  name: notification-service-configuration
   namespace: e-commerce
 data:
   application.yml: |
@@ -10,53 +10,53 @@ data:
       config:
         import: optional:configserver:http://config-service-svc:8888
       application:
-        name: discovery-service
+        name: notification-service
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: discovery-service-svc
+  name: notification-service-svc
   namespace: e-commerce
   labels:
-    app: discovery-service-svc
+    app: notification-service-svc
 spec:
   type: ClusterIP
   ports:
-    - name: discovery-port
-      port: 8761
-      targetPort: 8761
+    - name: notif-port
+      port: 8040
+      targetPort: 8040
       protocol: TCP
   selector:
-    app: discovery-service-pod
+    app: notification-service-pod
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: discovery-service-dep
+  name: notification-service-dep
   namespace: e-commerce
   labels:
-    app: discovery-service-dep
+    app: notification-service-dep
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: discovery-service-pod
+      app: notification-service-pod
   template:
     metadata:
       labels:
-        app: discovery-service-pod
+        app: notification-service-pod
     spec:
       containers:
-        - name: discovery-service-container
-          image: discovery-server
+        - name: notification-service-container
+          image: notification-service
           imagePullPolicy: IfNotPresent
           volumeMounts:
-            - name: root-config
+            - name: config
               mountPath: /config/application.yml
               subPath: application.yml
           ports:
-            - containerPort: 8761
-              name: discovery-port
+            - containerPort: 8040
+              name: notif-port
           env:
             - name: SPRING_CONFIG_ADDITIONAL_LOCATION
               value: "file:/config/"
@@ -70,18 +70,18 @@ spec:
           readinessProbe:
             httpGet:
               path: /actuator/health
-              port: 8761
-            initialDelaySeconds: 30
+              port: 8040
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
           livenessProbe:
             httpGet:
               path: /actuator/health
-              port: 8761
-            initialDelaySeconds: 60
+              port: 8040
+            initialDelaySeconds: 90
             periodSeconds: 15
             timeoutSeconds: 5
       volumes:
-        - name: root-config
+        - name: config
           configMap:
-            name: discovery-server-configuration
+            name: notification-service-configuration

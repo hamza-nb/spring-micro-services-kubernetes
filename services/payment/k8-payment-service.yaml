@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: discovery-server-configuration
+  name: payment-service-configuration
   namespace: e-commerce
 data:
   application.yml: |
@@ -10,53 +10,53 @@ data:
       config:
         import: optional:configserver:http://config-service-svc:8888
       application:
-        name: discovery-service
+        name: payment-service
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: discovery-service-svc
+  name: payment-service-svc
   namespace: e-commerce
   labels:
-    app: discovery-service-svc
+    app: payment-service-svc
 spec:
   type: ClusterIP
   ports:
-    - name: discovery-port
-      port: 8761
-      targetPort: 8761
+    - name: payment-port
+      port: 8060
+      targetPort: 8060
       protocol: TCP
   selector:
-    app: discovery-service-pod
+    app: payment-service-pod
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: discovery-service-dep
+  name: payment-service-dep
   namespace: e-commerce
   labels:
-    app: discovery-service-dep
+    app: payment-service-dep
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: discovery-service-pod
+      app: payment-service-pod
   template:
     metadata:
       labels:
-        app: discovery-service-pod
+        app: payment-service-pod
     spec:
       containers:
-        - name: discovery-service-container
-          image: discovery-server
+        - name: payment-service-container
+          image: payment-service
           imagePullPolicy: IfNotPresent
           volumeMounts:
-            - name: root-config
+            - name: config
               mountPath: /config/application.yml
               subPath: application.yml
           ports:
-            - containerPort: 8761
-              name: discovery-port
+            - containerPort: 8060
+              name: payment-port
           env:
             - name: SPRING_CONFIG_ADDITIONAL_LOCATION
               value: "file:/config/"
@@ -70,18 +70,18 @@ spec:
           readinessProbe:
             httpGet:
               path: /actuator/health
-              port: 8761
-            initialDelaySeconds: 30
+              port: 8060
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
           livenessProbe:
             httpGet:
               path: /actuator/health
-              port: 8761
-            initialDelaySeconds: 60
+              port: 8060
+            initialDelaySeconds: 90
             periodSeconds: 15
             timeoutSeconds: 5
       volumes:
-        - name: root-config
+        - name: config
           configMap:
-            name: discovery-server-configuration
+            name: payment-service-configuration

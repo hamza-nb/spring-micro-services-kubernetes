@@ -1,7 +1,9 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mailer-dev
+  namespace: e-commerce
   labels:
     app: mailer-dev-dep
 spec:
@@ -19,15 +21,30 @@ spec:
           image: maildev/maildev
           ports:
             - containerPort: 1080
-              name: first-port
+              name: ui
             - containerPort: 1025
-              name: second-port
-      restartPolicy: Always
+              name: smtp
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 1080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
 ---
+# UI accessible from outside (browser)
 apiVersion: v1
 kind: Service
 metadata:
-  name: mailer-dev
+  name: mailer-dev-ui
+  namespace: e-commerce
   labels:
     app: mailer-dev-svc
 spec:
@@ -35,12 +52,25 @@ spec:
   ports:
     - port: 1080
       targetPort: 1080
-      name: first-port
-      protocol: TCP
-    - port: 1025
-      targetPort: 1025
-      name: second-port
+      name: ui
       protocol: TCP
   selector:
     app: mailer-dev-pod
-
+---
+# SMTP only accessible internally by other services
+apiVersion: v1
+kind: Service
+metadata:
+  name: mailer-dev
+  namespace: e-commerce
+  labels:
+    app: mailer-dev-smtp-svc
+spec:
+  type: ClusterIP
+  ports:
+    - port: 1025
+      targetPort: 1025
+      name: smtp
+      protocol: TCP
+  selector:
+    app: mailer-dev-pod
