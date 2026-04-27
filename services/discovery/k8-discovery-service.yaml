@@ -20,7 +20,7 @@ metadata:
   labels:
     app: discovery-service-svc
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   ports:
     - name: discovery-port
       port: 8761

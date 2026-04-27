@@ -51,7 +51,7 @@ metadata:
   labels:
     app: zipkin-svc
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   ports:
     - port: 9411
       targetPort: 9411

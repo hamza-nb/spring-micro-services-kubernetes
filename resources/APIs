@@ -22,6 +22,21 @@ POST: localhost:8222/api/v1/customers
     }
 }
 
+Post: localhost:8222/api/v1/orders
+
+{
+    "reference": "ref-2",
+    "amount": 1345,
+    "paymentMethod": "VISA",
+    "customerId": "4133efc4-d0b0-40b7-b2d2-e3e789ac0e5a",
+    "products": [
+        {
+            "productId": 51,
+            "quantity": 1
+        }
+    ]
+}
+
 kubectl create configmap config-server-configurations \
   --from-file=src/main/resources/configurations \
   --dry-run=client -o yaml > configmap-config-server-configurations.yaml
